@@ -1,34 +1,31 @@
-package com.functions.encrypt;
+package com.functions.utils;
 
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.secrets.SecretClient;
 import com.azure.security.keyvault.secrets.SecretClientBuilder;
 
-public class SecretClientSingleton {
+public class KeyVaultClientSingleton {
 
-    private static SecretClientSingleton instance;
-
-    private String URI;
+    private static KeyVaultClientSingleton instance;
 
     private SecretClient secretClient;
 
-    private SecretClientSingleton(String URI) {
-        this.URI = URI;
+    private KeyVaultClientSingleton(final String URI) {
         this.secretClient = new SecretClientBuilder()
             .vaultUrl(URI)
             .credential(new DefaultAzureCredentialBuilder().build())
             .buildClient();
     }
 
-    public static SecretClientSingleton getInstance(String URI) {
+    public static KeyVaultClientSingleton getInstance(final String URI) {
         if (instance == null) {
-            instance = new SecretClientSingleton(URI);
+            instance = new KeyVaultClientSingleton(URI);
         }
         return instance;
     }
 
     public SecretClient getSecretClient() {
-        return secretClient;
+        return this.secretClient;
     }
 }
 
