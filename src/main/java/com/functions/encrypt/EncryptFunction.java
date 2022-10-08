@@ -75,8 +75,7 @@ public class EncryptFunction {
             }};
 
             Gson gson = new Gson();
-            Type gsonType = new TypeToken<HashMap>(){}.getType();
-            String jsonPayload = gson.toJson(values,gsonType);
+            String jsonPayload = gson.toJson(values, new TypeToken<HashMap>(){}.getType());
 
             //Create encrypt request
             HttpRequest httpRequest = HttpRequest.newBuilder()
