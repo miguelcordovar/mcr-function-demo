@@ -1,4 +1,4 @@
-package com.functions.utils;
+package com.functions.helpers;
 
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
@@ -9,6 +9,30 @@ import java.security.NoSuchAlgorithmException;
 import java.security.cert.X509Certificate;
 
 public class HttpClientSingleton {
+    private static HttpClientSingleton instance;
+    private static Object monitor = new Object();
+    private HttpClient httpClient;
+
+    private HttpClientSingleton() {
+        this.httpClient = HttpClient.newBuilder()
+            .sslContext(insecureContext())
+            .build();
+    }
+
+    public static HttpClientSingleton getInstance() {
+        if (instance == null) {
+            synchronized (monitor) {
+                if (instance == null) {
+                    instance = new HttpClientSingleton();
+                }
+            }
+        }
+        return instance;
+    }
+
+    public HttpClient getHttpClient() {
+        return this.httpClient;
+    }
 
     private SSLContext insecureContext() {
         TrustManager[] noopTrustManager = new TrustManager[]{
@@ -28,27 +52,6 @@ public class HttpClientSingleton {
         } catch (KeyManagementException | NoSuchAlgorithmException ex) {
             return null;
         }
-    }
-
-    private static HttpClientSingleton instance;
-
-    private HttpClient httpClient;
-
-    private HttpClientSingleton() {
-        this.httpClient = HttpClient.newBuilder()
-            .sslContext(insecureContext())
-            .build();
-    }
-
-    public static HttpClientSingleton getInstance() {
-        if (instance == null) {
-            instance = new HttpClientSingleton();
-        }
-        return instance;
-    }
-
-    public HttpClient getHttpClient() {
-        return this.httpClient;
     }
 }
 

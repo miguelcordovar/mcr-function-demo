@@ -48,14 +48,6 @@
             <version>1.2.0</version>
         </dependency>
 
-        <dependency>
-            <groupId>redis.clients</groupId>
-            <artifactId>jedis</artifactId>
-            <version>4.1.0</version>
-            <type>jar</type>
-            <scope>compile</scope>
-        </dependency>
-
         <!-- Test -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
